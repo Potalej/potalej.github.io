@@ -1,0 +1,26 @@
+.nav-menu {
+  margin-bottom: 2vh;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 1rem;
+}
+@media all and (max-width: 960px) {
+  .nav-menu {
+    border: none;
+  }
+  .nav-menu ul {
+    justify-content: center;
+  }
+}
+
+
+/* postagens */
+.lista-postagens  td {
+  padding: 20px 10px;
+}

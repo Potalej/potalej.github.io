@@ -1,23 +1,25 @@
 ---
-layout: homepage
+layout: default
 ---
 
-## About Me
+<img src="{{ site.baseurl }}/assets/img/patos.jpg" style="height: 15vh; width: 100%; object-fit: cover; object-position: center 42%;">
 
-I am a Ph.D. student at ...
+## Sobre mim
 
-## Research Interests
+Sou mestrando em matemática aplicada pelo Instituto de Matemática, Estatística e Ciência da Computação da Universidade de São Paulo (IME-USP). Atualmente estudo o [problema de N-corpos](https://en.wikipedia.org/wiki/N-body_problem).
 
-- **Computer Vision:** image recognition, image generation, video captioning
-- **Machine Learning:** meta-learning, incremental learning, transfer learning
+## Interesses
 
-## News
+- **Problema de N-corpos:** simulação numérica, dinâmica, geração de valores iniciais.
+- **Integração numérica:** integradores simpléticos, backward error analysis.
 
-- **[Feb. 2020]** Our paper about incremental learning is accepted to CVPR 2020.
-- **[Feb. 2020]** We will host the ACM Multimedia Asia 2020 conference in Singapore!
-- **[Sept. 2019]** Our paper about few-shot learning is accepted to NeurIPS 2019.
-- **[Mar. 2019]** Our paper about few-shot learning is accepted to CVPR 2019.
+## Novidades
 
-{% include_relative _includes/publications.md %}
+- **[Dez. 2025]** Publicação da biblioteca [ncorpos-vi-py](https://pypi.org/project/ncorpos-vi-py/).
+- **[Out. 2025]** Apresentação nos Seminários de Métodos Numéricos e Aplicações (IME-USP)
+- **[Set. 2025]** Apresentação nos Seminários de Mecânica Celeste (IME-USP)
+- **[Dez. 2024]** Trabalho de conclusão de curso aprovado! :)
 
-{% include_relative _includes/services.md %}
+<!-- {% include_relative _includes/publications.md %}
+
+{% include_relative _includes/services.md %} -->

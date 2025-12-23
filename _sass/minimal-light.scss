@@ -14,7 +14,7 @@
   line-height:2.5rem;
   margin-right:1rem}
 
-@media (prefers-color-scheme: dark) { .social-icons a {color: #3eb7f0 !important; }}
+@media (prefers-color-scheme: dark) { .social-icons a {color: #bb8cd1 !important; }}
 
 .social-icons a:last-child{margin-right:0}.social-icons a:hover{background-color:white;
     color:black;
@@ -160,7 +160,7 @@ papertitle {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #20212b;
+        background-color: #212121;
         color: #dadbdf;
     }
 
@@ -249,11 +249,11 @@ h2 {
 
 @media (prefers-color-scheme: dark) {
   h1, h3, h4, h5, h6 {
-    color:rgb(62, 183, 240);
+    color:#bb8cd1;
   }
 
   h2 {
-    color:rgb(62, 183, 240);
+    color:#bb8cd1;
   }
 }
 
@@ -280,7 +280,7 @@ a:hover {
 
 @media (prefers-color-scheme: dark) {
   a {
-    color:rgb(62, 183, 240);
+    color:#bb8cd1;
   }
 }
 
@@ -343,11 +343,11 @@ th {
 
 @media (prefers-color-scheme: dark) {
   th {
-    color:rgb(62, 183, 240);
+    color:#bb8cd1;
   }
 
   dt {
-    color:rgb(62, 183, 240);
+    color:#bb8cd1;
   }
 }
 
@@ -360,7 +360,7 @@ header {
   float:left;
   position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
-  padding-top:4.0em;
+  padding-top:2.5em;
   text-align:center
 }
 
@@ -434,7 +434,7 @@ header ul a strong {
 section {
   width:650px;
   float:right;
-  padding-top:4.0em;
+  padding-top:2.5em;
   padding-bottom:50px;
 }
 
