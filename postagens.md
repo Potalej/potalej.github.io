@@ -19,7 +19,7 @@ Textos e anotações aleatórias.
         {% assign date = post.date | date: "%d/%m/%Y" %}
         <tr>
             <td>
-                <div><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></div>
+                <div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></div>
                 <sub>{{ date }}</sub>
             </td>
             <td>{{ post.excerpt }}</td>

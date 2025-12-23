@@ -2,7 +2,6 @@
 layout: post
 title: Compilando módulos de Fortran como bibliotecas do Python
 date: 2025-12-22
-categories: [fortran, python]
 excerpt: Mini-guia para não esquecer como compilar um módulo Fortran e publicá-lo como uma biblioteca Python no PyPI.
 ---
 
