@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Octavio Augusto Potalej | IME-USP</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    
+    
+
+    <link rel="icon" media="(prefers-color-scheme:dark)" href="./assets/img/favicon.svg" type="image/png" />
+    <link rel="icon" media="(prefers-color-scheme:light)" href="./assets/img/favicon.svg" type="image/png" />
+    <script src="/assets/js/favicon-switcher.js" type="application/javascript"></script>
+
+    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin=anonymous>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    <link rel="stylesheet" href="/assets/css/font.css">
+    
+    
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/publications.css">
+    
+
+  </head>
+  <body>
+    <div class="wrapper">
+      
+      <header>
+        
+        
+        <a class="image avatar">
+          <img src="/assets/img/avatar.jpg" alt="avatar" />
+        </a>
+        
+
+        <h1>Octavio Augusto Potalej</h1>
+
+        
+        <position style="font-size:1.10rem;">Mestrando em Matemática Aplicada</position>
+        <br>
+        
+        
+        <a href="" rel="noopener"><autocolor>IME-USP</autocolor></a>
+        <br>
+        
+        
+        <email>oapotalej (at) ime.usp.br</email>
+        
+
+        <br>
+        <div class="social-icons">
+        
+        <a style="margin: 0 0 0 0" href="http://lattes.cnpq.br/6560012636399433">
+          <i class="ai ai-lattes"></i>
+        </a>
+        
+
+        
+
+        
+
+        
+        <a style="margin: 0 5px 0 0" href="https://github.com/potalej">
+          <i class="fab fa-github"></i>
+        </a>
+        
+
+        
+        <br>
+        </div>
+
+      </header>
+      <section>
+      <nav class="nav-menu">
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/postagens">Postagens</a></li>
+          <li><a href="/arquivos">Arquivos</a></li>
+        </ul>
+      </nav>
+
+      <h2>Compilando módulos de Fortran como bibliotecas do Python</h2>
+<div>
+  <b>22.12.2025</b>
+</div>
+<br>
+
+
+<p>Pequeno guia para eu não esquecer como isso deve ser feito.</p>
+
+<p>Vou considerar a biblioteca <a href="https://github.com/potalej/ncorpos-utilidades-py" target="_blank">ncorpos-utilidades-py</a>, baseada no módulo Fortran <a href="https://github.com/potalej/ncorpos-utilidades" target="_blank">ncorpos-utilidades</a>. A dificuldade principal nela foi conseguir linkar o OpenBLAS.</p>
+
+<h2 id="arquivos">Arquivos</h2>
+
+<h3 id="módulo-fortran">Módulo Fortran</h3>
+
+<p>O módulo de utilidades em Fortran tem a seguinte estrutura:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── cmake
+│   └── FindOpenBLAS.cmake
+├── CMakeLists.txt
+├── include
+│   └── tipos.F90
+├── README.md
+└── src
+    └── utilidades.f90
+</code></pre></div></div>
+
+<p>O <a href="https://github.com/Potalej/ncorpos-utilidades/blob/main/cmake/FindOpenBLAS.cmake" target="_blank">“FindOpenBLAS.cmake”</a> é só um procurador de OpenBLAS, ele varre algumas pastas padrão do sistema para ver se encontra o BLAS em alguma delas.</p>
+
+<p>O <a href="https://github.com/Potalej/ncorpos-utilidades/blob/main/CMakeLists.txt" target="_blank">CMakeLists.txt</a> principal compila o módulo como uma biblioteca do tipo “SHARED”, incluí o arquivo “tipos.F90” (tipos personalizados) e o OpenBLAS.</p>
+
+<h3 id="repositório-da-biblioteca">Repositório da biblioteca</h3>
+
+<p>Já o repositório da biblioteca em Python tem a seguinte estrutura básica:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
+├── CMakeLists.txt
+├── .github
+│   └── workflows
+│       ├── pypi.yml
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── src
+│   └── ncorpos_utilidades
+│       ├── api.py
+│       ├── ext
+│       │   ├── ncorpos_utilidades <span class="o">(</span>module<span class="o">)</span>
+│       │   └── ncorpos_utilidades.f90
+│       ├── __init__.py
+│       └── _version.py
+└── tests
+    └── test_import.py
+</code></pre></div></div>
+
+<p>Aqui tem algumas coisas importantes.</p>
+
+<h4 id="git-submodule">Git Submodule</h4>
+
+<p>No diretório “src/ncorpos_utilidades/ext” há um diretório “ncorpos_utilidades” que destaquei como um “module”. Ele foi adicionado como um <code class="language-plaintext highlighter-rouge">submodule</code> do versionador git:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add submodule https://github.com/potalej/ncorpos-utilidades src/ncorpos_utilidades/ext/ncorpos_utilidades
+</code></pre></div></div>
+
+<p>Isso é prático porque para sincronizar com o repositório original é só usar o git.</p>
+
+<h4 id="wrapper">Wrapper</h4>
+
+<p>Também dentro do diretório “src/ncorpos_utilidades/ext” tem o arquivo <a href="https://github.com/Potalej/ncorpos-utilidades-py/blob/main/src/ncorpos_utilidades/ext/ncorpos_utilidades.f90" target="_blank">“ncorpos_utilidades.f90”</a>. Ele é quem faz a ponte entre a api em Python com as funções da biblioteca e o módulo Fortran. É o chamado “wrapper”.</p>
+
+<h4 id="api">API</h4>
+
+<p>O script “src/ncorpos_utilidades/api.py” é quem chamada esse wrapper e tem as funções do módulo. Pode ser mais de um arquivo, eu que escolhi ser só esse.</p>
+
+<h4 id="pyprojecttoml">pyproject.toml</h4>
+
+<p>O <a href="https://github.com/Potalej/ncorpos-utilidades-py/blob/main/pyproject.toml" target="_blank">“pyproject.toml”</a> contém configurações do projeto, como as bibliotecas requeridas e tal:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">[</span><span class="nv">build-system</span><span class="pi">]</span>
+<span class="s">requires = [</span>
+  <span class="s">"scikit-build-core&gt;=0.9",</span>
+  <span class="s">"numpy",</span>
+  <span class="s">"meson",</span>
+  <span class="s">"ninja",</span>
+  <span class="s">"wheel",</span>
+  <span class="s">"meson-python"</span>
+<span class="err">]</span>
+<span class="s">build-backend = "scikit_build_core.build"</span>
+
+<span class="pi">[</span><span class="nv">project</span><span class="pi">]</span>
+<span class="s">name = "ncorpos-utilidades-py"</span>
+<span class="s">version = "0.2.2"</span>
+<span class="s">description = "Utilidades via Fortran"</span>
+<span class="s">authors = [{ name = "potalej" }]</span>
+<span class="s">readme = "README.md"</span>
+<span class="s">license = { file = "LICENSE" }</span>
+<span class="s">dependencies = ["numpy"]</span>
+
+<span class="pi">[</span><span class="nv">tool.scikit-build</span><span class="pi">]</span>
+<span class="s">wheel.packages = ["ncorpos_utilidades"]</span>
+
+<span class="pi">[</span><span class="nv">tool.scikit-build.sdist</span><span class="pi">]</span>
+<span class="s">include = [</span>
+  <span class="s">"CMakeLists.txt",</span>
+  <span class="s">"src/ncorpos_utilidades/**"</span>
+<span class="err">]</span>
+</code></pre></div></div>
+
+<p>É nele também que eu faço o versionamento do projeto. Na parte “[project]”, o <code class="language-plaintext highlighter-rouge">name</code> corresponde ao nome da biblioteca quando for publicada, e o <code class="language-plaintext highlighter-rouge">wheel.packages</code> é o nome da biblioteca quando ela for importada - precisa ser o mesmo nome do diretório dentro de “src”.</p>
+
+<h4 id="cmakeliststxt">CMakeLists.txt</h4>
+
+<p>Essa é talvez a parte mais confusa. É mais fácil ver como o arquivo está escrito e tentar aproveitar algo. A parte do Python é confusa mas essencial.</p>
+
+<h4 id="github-workflow">GitHub Workflow</h4>
+
+<p>No diretório “.github/workflows” eu tenho o arquivo <a href="https://github.com/Potalej/ncorpos-utilidades-py/blob/main/.github/workflows/pypi.yml" target="_blank">“pypi.yml”</a>. Ele é quem vai fazer o build dentro do próprio GitHub e depois subir esse build para o PyPI. Isso será feito através do <a href="https://cibuildwheel.pypa.io/en/stable/" target="_blank">cibuildwheel</a>.</p>
+
+<p>Ele começa assim:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Compilar e publicar no TestPyPI e no PyPI</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">main</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<p>Isso significa que toda vez que um commit for feito na branch “main” esse workflow será disparado, bem como é permitido que ele seja despachado manualmente (<code class="language-plaintext highlighter-rouge">workflow_dispatch</code>).</p>
+
+<p>Na seção <code class="language-plaintext highlighter-rouge">jobs</code> tem os trabalhos que serão feitos pelo Workflow. São eles: <code class="language-plaintext highlighter-rouge">build</code>, <code class="language-plaintext highlighter-rouge">publicar-testpypi</code> e <code class="language-plaintext highlighter-rouge">publicar-pypi</code>.</p>
+
+<p>Vamos por partes. O <code class="language-plaintext highlighter-rouge">build</code> começa com o seguinte:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">build</span><span class="pi">:</span>
+  <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">submodules</span><span class="pi">:</span> <span class="s">recursive</span>
+</code></pre></div></div>
+
+<p>O <code class="language-plaintext highlighter-rouge">runs-on: ubuntu-latest</code> significa que o código será compilado para sistemas Linux. Já o <code class="language-plaintext highlighter-rouge">steps</code> é a seção que contém o que será rodado (de forma sequencial). O primeiro é o checkout, que faz um clone do repositório que está sendo compilado, incluindo os submódulos.</p>
+
+<p>Agora precisamos do Python. Podemos chamar o <code class="language-plaintext highlighter-rouge">setup-python</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Configura o Python</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v5</span>
+</code></pre></div></div>
+
+<p>Precisamos também das ferramentas de compilação, que são bibliotecas do Python. Aproveito para atualizar os submódulos do git, só para garantir.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Instalar ferramentas para compilação</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">python -m pip install --upgrade pip</span>
+    <span class="s">python -m pip install cibuildwheel twine build "numpy&gt;=1.26"</span>
+    <span class="s">git submodule update --init --recursive</span>
+</code></pre></div></div>
+
+<p>Agora rodamos o cibuildwheel. Essa é a parte em que o código é compilado de fato.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Rodando o cibuildwheel</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">python -m cibuildwheel --output-dir wheelhouse</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="na">CIBW_BUILD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">cp310-*</span><span class="nv"> </span><span class="s">cp311-*</span><span class="nv"> </span><span class="s">cp312-*"</span>
+    
+    <span class="na">CIBW_TEST_REQUIRES</span><span class="pi">:</span> <span class="s">pytest</span>
+    <span class="na">CIBW_TEST_COMMAND</span><span class="pi">:</span> <span class="s">pytest {project}/tests</span>
+
+    <span class="na">CIBW_MANYLINUX_X86_64_IMAGE</span><span class="pi">:</span> <span class="s">manylinux_2_28</span>
+    <span class="na">CIBW_SKIP</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*-musllinux_*"</span>
+
+    <span class="na">CIBW_BEFORE_ALL_LINUX</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="s">yum install -y gcc-gfortran openblas-devel lapack-devel</span>
+      
+    <span class="na">CIBW_ENVIRONMENT_LINUX</span><span class="pi">:</span> <span class="s1">'</span><span class="s">LDFLAGS="-Wl,-rpath,\$ORIGIN</span><span class="nv"> </span><span class="s">-lopenblas</span><span class="nv"> </span><span class="s">-llapack"'</span>
+</code></pre></div></div>
+
+<ul>
+  <li>O <code class="language-plaintext highlighter-rouge">CIBW_BUILD</code> indica as versões do Python que serão utilizadas (e que consequentemente serão disponibilizadas depois).</li>
+  <li>O <code class="language-plaintext highlighter-rouge">CIBW_TEST_REQUIRES</code> e o <code class="language-plaintext highlighter-rouge">CIBW_TEST_COMMAND</code> são coisas do pytest, e fazem os testes de unidade do programa, se tiver.</li>
+  <li>O <code class="language-plaintext highlighter-rouge">CIBW_MANYLINUX_X86_64_IMAGE</code> guarda quais imagens do Linux serão utilizadas;</li>
+  <li>O <code class="language-plaintext highlighter-rouge">CIBW_SKIP</code> tem as imagens que serão puladas dentre as selecionadas. Por exemplo, aqui eu pulo o Musl.</li>
+  <li>O <code class="language-plaintext highlighter-rouge">CIBW_BEFORE_ALL_LINUX</code> contém todos os comandos que serão rodados antes do build nas plataformas Linux. No caso, ali é feita a instalação do GCC, do OpenBLAS e do LAPACK.</li>
+  <li>O <code class="language-plaintext highlighter-rouge">CIBW_ENVIRONMENT_LINUX</code>, por fim, define as variáveis de ambiente que estarão nos ambientes Linux em que serão feitas as builds.</li>
+</ul>
+
+<p>Por fim, nós subimos o que for compilado para que seja acessível de outras partes do workflow e até mesmo de outros workflows, os chamados <code class="language-plaintext highlighter-rouge">artifacts</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Subindo os artifacts</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">python-package-distributions</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">./wheelhouse/*.whl</span>
+</code></pre></div></div>
+
+<p>Agora vem a parte mais fácil. Uma vez que você criou uma conta no Test PyPI e/ou no PyPI e adicionou seu repositório lá como permitido para enviar trabalhos, vem a parte de publicação.</p>
+
+<p>No Test PyPI é assim:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">publicar-testpypi</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Publicar para o TestPyPI</span>
+  <span class="na">needs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">build</span>
+  <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+  <span class="na">environment</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">testpypi</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">https://test.pypi.org/p/ncorpos-utilidades-py</span>
+
+  <span class="na">permissions</span><span class="pi">:</span>
+    <span class="na">id-token</span><span class="pi">:</span> <span class="s">write</span>
+
+  <span class="na">steps</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Baixando todas as dists</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v6</span>
+    <span class="na">with</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">python-package-distributions</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">dist/</span>
+    
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Publicando no TestPyPI</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">pypa/gh-action-pypi-publish@release/v1</span>
+    <span class="na">with</span><span class="pi">:</span>
+      <span class="na">repository-url</span><span class="pi">:</span> <span class="s">https://test.pypi.org/legacy/</span>
+</code></pre></div></div>
+
+<p>No PyPI é bem parecido:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">publicar-pypi</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="pi">&gt;-</span>
+    <span class="s">Publicar para o PyPI</span>
+  <span class="na">needs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">build</span>
+  <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+  <span class="na">environment</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">pypi</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">https://pypi.org/p/ncorpos-utilidades-py</span>
+  <span class="na">permissions</span><span class="pi">:</span>
+    <span class="na">id-token</span><span class="pi">:</span> <span class="s">write</span>  <span class="c1"># IMPORTANT: mandatory for trusted publishing</span>
+
+  <span class="na">steps</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Baixando todas as dists</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v6</span>
+    <span class="na">with</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">python-package-distributions</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">dist/</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Publicando no PyPI</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">pypa/gh-action-pypi-publish@release/v1</span>
+</code></pre></div></div>
+
+
+      </section>
+      <footer>
+        
+      </footer>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+    
+  </body>
+</html>
