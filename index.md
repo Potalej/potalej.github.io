@@ -11,10 +11,11 @@ Sou mestrando em matemática aplicada pelo Instituto de Matemática, Estatístic
 ## Interesses
 
 - **Problema de N-corpos:** simulação numérica, dinâmica, geração de valores iniciais.
-- **Integração numérica:** integradores simpléticos, backward error analysis.
+- **Métodos numéricos:** integradores simpléticos, corretores numéricos.
 
 ## Novidades
 
+- **[Jan. 2026]** Finalmente um [gravidade-fortran](https://github.com/potalej/gravidade-fortran) v1.0.0!
 - **[Dez. 2025]** Publicação da biblioteca [ncorpos-vi-py](https://pypi.org/project/ncorpos-vi-py/).
 - **[Out. 2025]** Apresentação nos Seminários de Métodos Numéricos e Aplicações (IME-USP)
 - **[Set. 2025]** Apresentação nos Seminários de Mecânica Celeste (IME-USP)
