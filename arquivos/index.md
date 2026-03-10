@@ -12,6 +12,7 @@ title: "Postagens"
 
 ### Outros slides e afins
 
+- [Slides para o Coloquinho da Pós (mar/2026)]({{ site.baseurl }}/arquivos/coloquinho2026/coloquinho.pdf)
 - [Slides para o Seminário de Métodos Numéricos e Aplicações (out/2025)]({{ site.baseurl }}/arquivos/smn2025.pdf)
 - [Slides para o Seminário de Mecânica Celeste (set/2025)]({{ site.baseurl }}/arquivos/smc2025.pdf)
 - SIICUSP (2023):
