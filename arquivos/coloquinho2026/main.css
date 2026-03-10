@@ -1,0 +1,25 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0px;
+  /* margin: 0px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: monospace;
+}
+
+main {
+  padding: 10px;
+}
+
+.duas_colunas {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.tres_colunas {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
