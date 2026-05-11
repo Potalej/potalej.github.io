@@ -15,6 +15,7 @@ Sou mestrando em matemática aplicada pelo Instituto de Matemática, Estatístic
 
 ## Novidades
 
+- **[Mai. 2026]** Semana da Matemática Aplicada!!! 🦆🦆🦆
 - **[Mar. 2026]** Apresentação no Coloquinho da Pós :)
 - **[Jan. 2026]** Finalmente um [gravidade-fortran](https://github.com/potalej/gravidade-fortran) v1.0.0!
 - **[Dez. 2025]** Publicação da biblioteca [ncorpos-vi-py](https://pypi.org/project/ncorpos-vi-py/).
